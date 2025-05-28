@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Handlooms of Uppada</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Roboto&display=swap" rel="stylesheet" />
+  <style>
+    /* Reset & base */
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: 'Roboto', sans-serif;
+      background: #fafafa;
+      color: #444;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      background: #f9f5f0;
+      padding: 1.5rem;
+      text-align: center;
+      font-family: 'Playfair Display', serif;
+      color: #6a4a3c;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+    header h1 {
+      margin: 0;
+      font-size: 2.8rem;
+      letter-spacing: 0.1em;
+      font-weight: 700;
+    }
+    header p {
+      margin-top: 0.3rem;
+      font-style: italic;
+      font-weight: 400;
+      font-size: 1.2rem;
+      color: #7d6a5f;
+    }
+
+    main {
+      flex: 1;
+      padding: 1rem 1.5rem 5.5rem; /* bottom padding for nav */
+      max-width: 1000px;
+      margin: auto;
+      width: 100%;
+    }
+
+    section.products {
+      margin-bottom: 2.5rem;
+    }
+    section.products h2 {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      color: #6a4a3c;
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      border-bottom: 2px solid #d6c6b9;
+      padding-bottom: 0.3rem;
+    }
+    .product-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.3rem;
+      justify-content: center;
+    }
+    .product {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(106, 74, 60, 0.15);
+      width: 230px;
+      padding: 1rem;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.2s ease;
+    }
+    .product:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 10px 18px rgba(106, 74, 60, 0.25);
+    }
+    .product img {
+      width: 100%;
+      border-radius: 8px;
+      cursor: pointer;
+      object-fit: cover;
+      height: 280px;
+      user-select: none;
+    }
+    .product h3 {
+      font-family: 'Playfair Display', serif;
+      margin: 0.8rem 0 0.4rem;
+      color: #6a4a3c;
+      font-weight: 700;
+      font-size: 1.25rem;
+    }
+    .product p {
+      font-size: 0.9rem;
+      color: #7d6a5f;
+      flex-grow: 1;
+      margin-bottom: 0.8rem;
+    }
+    .star-rating {
+      color: #d49a5b;
+      font-size: 1.15rem;
+      margin-bottom: 0.8rem;
+    }
+    .order-btn {
+      background: #ad8a64;
+      border: none;
+      border-radius: 7px;
+      padding: 0.5rem 1rem;
+      color: white;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.25s ease;
+      user-select: none;
+    }
+    .order-btn:hover {
+      background: #a57f51;
+    }
+
+    /* Reviews */
+    section.reviews {
+      max-width: 700px;
+      margin: 2rem auto 4rem;
+      padding: 1rem 1.3rem;
+      background: #f9f5f0;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(106, 74, 60, 0.1);
+      font-style: italic;
+      color: #6a4a3c;
+      font-family: 'Playfair Display', serif;
+    }
+    section.reviews h2 {
+      font-weight: 700;
+      font-size: 1.9rem;
+      margin-bottom: 1rem;
+      border-bottom: 2px solid #d6c6b9;
+      padding-bottom: 0.3rem;
+    }
+    .review {
+      margin-bottom: 1.3rem;
+      position: relative;
+      padding-left: 1.2rem;
+      font-size: 1.1rem;
+      color: #5a4534;
+    }
+    .review::before {
+      content: "❝";
+      position: absolute;
+      left: 0;
+      top: 0;
+      font-size: 2.3rem;
+      color: #d49a5b;
+      font-family: serif;
+      line-height: 1;
+    }
+    .review .rating {
+      color: #d49a5b;
+      font-size: 1.3rem;
+      margin-top: 0.3rem;
+      user-select: none;
+    }
+
+    /* Checkout */
+    #checkout {
+      max-width: 400px;
+      background: white;
+      padding: 1.5rem 2rem;
+      border-radius: 10px;
+      box-shadow: 0 6px 18px rgba(106, 74, 60, 0.2);
+      margin: 3rem auto 7rem;
+      display: none;
+      font-family: 'Roboto', sans-serif;
+    }
+    #checkout h2 {
+      font-family: 'Playfair Display', serif;
+      color: #6a4a3c;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      font-size: 1.8rem;
+    }
+    #checkout form label {
+      display: block;
+      margin: 0.5rem 0 0.15rem;
+      color: #6a4a3c;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+    #checkout form input,
+    #checkout form textarea {
+      width: 100%;
+      padding: 0.45rem 0.6rem;
+      border-radius: 6px;
+      border: 1.7px solid #d6c6b9;
+      font-size: 1rem;
+      font-family: 'Roboto', sans-serif;
+      resize: vertical;
+      color: #5a4534;
+    }
+    #checkout form textarea {
+      min-height: 60px;
+    }
+    #checkout form button {
+      margin-top: 1rem;
+      width: 100%;
+      background: #ad8a64;
+      color: white;
+      border: none;
+      padding: 0.7rem;
+      border-radius: 7px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background-color 0.25s ease;
+      user-select: none;
+    }
+    #checkout form button:hover {
+      background: #a57f51;
+    }
+
+    /* Bottom nav */
+    nav.bottom-nav {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: #ad8a64;
+      display: flex;
+      justify-content: space-around;
+      padding: 0.8rem 0;
+      box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.1);
+      z-index: 999;
+    }
+    nav.bottom-nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 1.1rem;
+      font-family: 'Playfair Display', serif;
+      user-select: none;
+      transition: color 0.3s ease;
+    }
+    nav.bottom-nav a:hover {
+      color: #f3e7dc;
+    }
+
+    /* Modal for image zoom */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.85);
+      justify-content: center;
+      align-items: center;
+      cursor: zoom-out;
+    }
+    .modal img {
+      max-width: 90vw;
+      max-height: 90vh;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(255, 255, 255, 0.4);
+      user-select: none;
+      pointer-events: none;
+    }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      .product-list {
+        flex-direction: column;
+        align-items: center;
+      }
+      .product {
+        width: 90vw;
+        max-width: 320px;
+      }
+      nav.bottom-nav a {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Handlooms of Uppada</h1>
+    <p>Timeless Elegance, Woven with Tradition</p>
+  </header>
+
+  <main>
+    <section class="products" id="women">
+      <h2>Women's Sarees</h2>
+      <div class="product-list">
+        <div class="product" data-id="w1">
+          <img src="https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&w=400&q=80" alt="Elegant Uppada Saree" />
+          <h3>Elegant Uppada Saree</h3>
+          <p>Handwoven pure silk saree with intricate patterns.</p>
+          <div class="star-rating">★★★★★</div>
+          <button class="order-btn">Add to Cart</button>
+        </div>
+        <div class="product" data-id="w2">
+          <img src="https://images.unsplash.com/photo-1520975690304-f62cabb23927?auto=format&fit=crop&w=400&q=80" alt="Traditional Red Saree" />
+          <h3>Traditional Red Saree</h3>
+          <p>Classic red Uppada saree, perfect for weddings.</p>
+          <div class="star-rating">★★★★☆</div>
+          <button class="order-btn">Add to Cart</button>
+        </div>
+        <div class="product" data-id="w3">
+          <img src="https://images.unsplash.com/photo-1503342452485-86b7f5e7ca4f?auto=format&fit=crop&w=400&q=80" alt="Golden Border Saree" />
+          <h3>Golden Border Saree</h3>
+          <p>Luxurious saree with shimmering gold zari borders.</p>
+          <div class="star-rating">★★★★★</div>
+          <button class="order-btn">Add to Cart</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="products" id="girls">
+      <h2>Girls' Ethnic Wear</h2>
+      <div class="product-list">
+        <div class="product" data-id="g1">
+          <img src="https://images.unsplash.com/photo-1501594907352-04cda38ebc29?auto=format&fit=crop&w=400&q=80" alt="Floral Anarkali Dress" />
+          <h3>Floral Anarkali Dress</h3>
+          <p>Comfortable and colorful traditional dress for girls.</p>
+          <div class="star-rating">★★★★☆</div>
+          <button class="order-btn">Add to Cart</button>
+        </div>
+        <div class="product" data-id="g2">
+          <img src="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=400&q=80" alt="Embroidered Lehenga" />
+          <h3>Embroidered Lehenga</h3>
+          <p>Beautiful lehenga with fine embroidery work.</p>
+          <div class="star-rating">★★★★★</div>
+          <button class="order-btn">Add to Cart</button>
+        </div>
+        <div class="product" data-id="g3">
+          <img src="https://images.unsplash.com/photo-1520974710730-51d0b48c9e21?auto=format&fit=crop&w=400&q=80" alt="Festive Salwar Kameez" />
+          <h3>Festive Salwar Kameez</h3>
+          <p>Elegant outfit perfect for festivals and special occasions.</p>
+          <div class="star-rating">★★★★☆</div>
+          <button class="order-btn">Add to Cart</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="reviews">
+      <h2>Customer Reviews</h2>
+      <div class="review">
+        <p>"The Uppada sarees from Handlooms of Uppada are exquisite — the craftsmanship is unmatched!"</p>
+        <div class="rating">★★★★★</div>
+      </div>
+      <div class="review">
+        <p>"Loved the quality and the softness of the fabric. Perfect for my wedding functions."</p>
+        <div class="rating">★★★★☆</div>
+      </div>
+      <div class="review">
+        <p>"Beautiful ethnic wear for my daughter, she absolutely adores it."</p>
+        <div class="rating">★★★★★</div>
+      </div>
+    </section>
+
+    <section id="checkout">
+      <h2>Checkout</h2>
+      <form id="checkout-form">
+        <label for="name">Name</label>
+        <input id="name" type="text" required />
+
+        <label for="address">Shipping Address</label>
+        <textarea id="address" required></textarea>
+
+        <label for="payment">Payment Method</label>
+        <select id="payment" required>
+          <option value="">Select</option>
+          <option value="phonepe">PhonePe (Online)</option>
+          <option value="cod">Cash on Delivery</option>
+        </select>
+
+        <button type="submit">Place Order</button>
+      </form>
+    </section>
+  </main>
+
+  <nav class="bottom-nav">
+    <a href="#women">Women</a>
+    <a href="#girls">Girls</a>
+    <a href="#reviews">Reviews</a>
+    <a href="#cart" id="cart-link">Cart (0)</a>
+  </nav>
+
+  <!-- Image Zoom Modal -->
+  <div id="image-modal" class="modal">
+    <img src="" alt="Zoomed product" />
+  </div>
+
+  <script>
+    (() => {
+      const cart = new Map(); // productId -> quantity
+
+      // Elements
+      const cartLink = document.getElementById('cart-link');
+      const checkoutSection = document.getElementById('checkout');
+      const checkoutForm = document.getElementById('checkout-form');
+      const imageModal = document.getElementById('image-modal');
+      const modalImg = imageModal.querySelector('img');
+
+      // Update Cart UI
+      function updateCartUI() {
+        let totalItems = 0;
+        cart.forEach(qty => totalItems += qty);
+        cartLink.textContent = `Cart (${totalItems})`;
+      }
+
+      // Add to Cart Handler
+      document.querySelectorAll('.order-btn').forEach(btn => {
+        btn.addEventListener('click', e => {
+          const productDiv = e.target.closest('.product');
+          const productId = productDiv.getAttribute('data-id');
+          cart.set(productId, (cart.get(productId) || 0) + 1);
+          updateCartUI();
+          alert('Added to cart!');
+        });
+      });
+
+      // Cart click shows cart contents and option to checkout
+      cartLink.addEventListener('click', e => {
+        e.preventDefault();
+        if (cart.size === 0) {
+          alert('Your cart is empty!');
+          return;
+        }
+        // Show cart contents and ask to proceed to checkout
+        let cartDetails = 'Your Cart:\n';
+        cart.forEach((qty, id) => {
+          const prod = document.querySelector(`.product[data-id="${id}"] h3`).textContent;
+          cartDetails += `${prod} — Qty: ${qty}\n`;
+        });
+        if (confirm(cartDetails + '\nProceed to checkout?')) {
+          checkoutSection.style.display = 'block';
+          window.scrollTo({ top: checkoutSection.offsetTop - 10, behavior: 'smooth' });
+        }
+      });
+
+      // Checkout form submit handler
+      checkoutForm.addEventListener('submit', e => {
+        e.preventDefault();
+        if (cart.size === 0) {
+          alert('Your cart is empty!');
+          return;
+        }
+        // Simple validation passed, show order placed
+        alert(`Thank you, ${checkoutForm.name.value}! Your order has been placed.\nPayment method: ${checkoutForm.payment.value === 'phonepe' ? 'PhonePe' : 'Cash on Delivery'}`);
+        // Clear cart & hide checkout
+        cart.clear();
+        updateCartUI();
+        checkoutSection.style.display = 'none';
+        checkoutForm.reset();
+      });
+
+      // Image zoom modal open/close
+      document.querySelectorAll('.product img').forEach(img => {
+        img.addEventListener('click', e => {
+          modalImg.src = e.target.src;
+          imageModal.style.display = 'flex';
+        });
+      });
+      imageModal.addEventListener('click', () => {
+        imageModal.style.display = 'none';
+        modalImg.src = '';
+      });
+
+      // Initialize cart UI
+      updateCartUI();
+    })();
+  </script>
+</body>
+</html>
